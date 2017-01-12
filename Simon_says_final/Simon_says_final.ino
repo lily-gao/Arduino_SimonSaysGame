@@ -1,5 +1,4 @@
-
-//For Sounds
+//For Sounds: Using the toneAC library
 #include <toneAC.h>
 
 #define NOTE_C4 262
@@ -26,6 +25,7 @@ const int greenN = NOTE_C5;
 
 
 //For myMillis()- A project requirement was to re-create the millis() function 
+
 //Number of times timer0 overflows (=number of 1.024 ms ellapsed since the begining of the progrem)
 unsigned long overflows = 0;
 //multiplier counting number of timer to multiply 0.024 seconds by to get the actual error
@@ -59,10 +59,10 @@ unsigned long int startT;
 unsigned long int endT;
 int diffT;
 
-//Determines if it is "ok to record user input"
+//Used when determining if it is "ok" to record user input (when sequence ends)
 bool okToRec = false;
 
-//Arrays to record output sequence and user input sequence along with the actual size we are using (level for output[] and inSize for input)
+//Arrays to record output sequence and user input sequence along with variables for the sizes of arrays (level for output[] and inSize for input)
   //Arrays' real sizes are set to 150 (represents max level) because it is highly unlikely that a user reaches this level
 int level = 1;
 int output [150];
@@ -95,7 +95,6 @@ void setup() {
 }
 
 void loop() {
-
   //output light sequence if conditions are met
   if ((inSize == 0) && !okToRec) {
     getOutput();
@@ -107,7 +106,7 @@ void loop() {
     startT = myMillis();
   }
 
-  //Get user input if time limit has not been reached and number of button presses is lower and the number of elements in outputted light sequence
+  //Get user input if time limit has not been reached and number of button presses is lower and the number of elements in outputted sequence
   while (((myMillis() - startT) < limT)&& okToRec) {
     if (inSize >= level) {
       break;
@@ -136,7 +135,7 @@ void loop() {
     level++;
     playMel (successMel, successDur, successMelSize);
     //Design decision: user should at least be allowed 1.5 seconds per sequence element. 
-      //This condition is not met by the initial 20 seconds time limit if user level exceeds 13, hence this 'if' statement
+      //However this condition is not met by the initial 20 seconds time limit if user level exceeds 13, hence this 'if' statement
     if (level >= 14){
       limT= level*1500;
     }
@@ -158,7 +157,7 @@ void loop() {
 
 
 //Timer 2 overflow interrupt routine, used for myMillis()
-   //This ISR counts the number of timer2 overflows (at the default prescaler, this takes 1.024 milliseconds, 
+  //This ISR counts the number of timer2 overflows (at the default prescaler, this takes 1.024 milliseconds, 
   // this is 3/125 more than 1 millisecond) and after each 125 overflows, the system corrects its error by adding 
   // 3 to the number of overflows (which corresponds to the number of milliseconds ellapsed since the begining
   //of the program). This means that myMillis can have at most an error of 2.976 milliseconds (accumulated over 124 overflows),
@@ -290,7 +289,7 @@ void addToIns (colors color){
 }
 
 
-//Checks if inout and output arrays are the same in size and in each index's element
+//Checks if input and output arrays are the same in size and in each index's element
 bool isSame () {
   if (level != (inSize)) {
     Serial.println ("Size problem");
