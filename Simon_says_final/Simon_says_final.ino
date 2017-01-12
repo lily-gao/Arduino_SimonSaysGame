@@ -1,4 +1,3 @@
-
 //For Sounds
 #include <toneAC.h>
 
@@ -25,7 +24,7 @@ const int greenN = NOTE_C5;
 
 
 
-//For myMillis()
+//For myMillis()- A project requirement was to re-create the millis() function 
 //Number of times timer0 overflows (=number of 1.024 ms ellapsed since the begining of the progrem)
 unsigned long overflows = 0;
 //multiplier counting number of timer to multiply 0.024 seconds by to get the actual error
